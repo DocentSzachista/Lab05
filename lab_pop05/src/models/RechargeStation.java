@@ -7,6 +7,7 @@ public class RechargeStation
 	private String space;
 	public RechargeStation(String space)
 	{
+		this.space=space;
 		setRobotSpace(" ");
 		setBusy(false);
 	}

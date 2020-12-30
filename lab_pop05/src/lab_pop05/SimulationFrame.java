@@ -1,19 +1,20 @@
 package lab_pop05;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import models.RechargeStation;
 import models.Robot;
+import models.SimulationEngine;
 
 import java.awt.GridLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JButton;
+
 
 public class SimulationFrame extends JFrame 
 {
@@ -32,11 +33,11 @@ public class SimulationFrame extends JFrame
 	/**
 	 * Create the frame.
 	 */
-	public SimulationFrame(int stations, int robotAmount) 
+	public SimulationFrame(int stationsAmount, int robotAmount) 
 	{
-		
-		Robot robots[]= fillArray(robotAmount, stations);
-		
+		SimulationEngine engine= new SimulationEngine(stationsAmount);
+		Robot robots[]= fillArray(robotAmount, stationsAmount);
+		RechargeStation stations[]=engine.getStation();
 		
 		
 		
@@ -45,11 +46,11 @@ public class SimulationFrame extends JFrame
 		
 		tableModelRecharge=new DefaultTableModel();
 		Object[] column= {"Stacja", "przestrzeñ dla robota"};//setupujemy kolumny
-		Object[] row= new Object[2]; //settupjemy zawartoœæ ka¿dej z kolumn
+		
 		tableModelRecharge.setColumnIdentifiers(column);
 		tableModelRobot=new DefaultTableModel();
 		Object[] columnRobot= {"Nazwa", "Rozmiar", "Status", "Czas"};//setupujemy kolumny
-		Object[] rowRobot= new Object[4]; //settupjemy zawartoœæ ka¿dej z kolumn
+		
 		tableModelRobot.setColumnIdentifiers(columnRobot);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +69,10 @@ public class SimulationFrame extends JFrame
 		
 		stationsTable = new JTable(tableModelRecharge);
 		scrollPane.setViewportView(stationsTable);
-		
+		for(int i=0; i<stationsAmount*3; i++)
+		{
+			tableModelRecharge.addRow(new Object[] {stations[i].getSpace(), stations[i].getRobotSpace()});
+		}
 		JScrollPane scrollPane_1 = new JScrollPane();
 		panel.add(scrollPane_1);
 		
@@ -97,4 +101,5 @@ public class SimulationFrame extends JFrame
 		int random = (int)(Math.random() * stationsAmount + minimum);
 		return random;
 	}
+	
 }
